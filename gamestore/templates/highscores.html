@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}High scores{% endblock %}
+
+{% block header %}
+{{ block.super }}
+<link rel='stylesheet' type='text/css' href='{% static "style.css" %}'>
+
+{% endblock %}
+
+{% block content %}
+<div class='container container-fluid'>
+    <div class='modal-dialog'>
+        <h1 class='text-center'>{{ game.name }}<br>Top 20:</h1>
+
+
+        <span class="gamelist nohover">
+            <div>
+                <ul style="margin:0 auto;">
+                   {% for score in scores|slice:':20' %}
+                    <li class='nohover' style='margin-bottom: 10px'>
+                        <span>{{ score.score }}</span>
+                        <h2>{{forloop.counter}}. {{ score.player.user.username }}</h2>
+                    </li>
+                    {% endfor %}
+                </ul>
+
+            </div>
+        </span>
+
+        <div class='text-center'><a href="/game/{{ game.pk }}">
+            <input type="submit" value="Back to the game"/>
+        </a></div>
+
+    </div>
+</div>
+{% endblock %}

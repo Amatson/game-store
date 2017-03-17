@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}Login{% endblock %}
+
+{% block header %}
+{{ block.super }}
+<link rel='stylesheet' type='text/css' href='{% static "style.css" %}'>
+{% endblock %}
+
+{% block content %}
+<div class="container container-fluid">
+    <div class="modal-dialog">
+
+        <h1>Login to Your Account</h1><br>
+        <form action='/login/' method='POST'>
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ request.GET.next }}" />
+            <input id='username' style="margin-bottom:10px" type='text' name='username'
+                   placeholder="Username">
+            <input id='password' style="margin-bottom:10px" type='password' name='password'
+                   placeholder="Password">
+            <input type='submit' value='Login'>
+
+        </form>
+
+        <div class="login-help">
+            <a href="/register">Register</a>
+        </div>
+        {% if request.GET.next %}
+            <br>
+            <p style='color:red'>Login required: {{ request.GET.next }}</p>
+        {% endif %}
+        {% if request.GET.activation_sent %}
+            <br>
+            <p style='color:red'>Account activation link has been sent to: {{ request.GET.activation_sent }}</p>
+        {% endif %}
+        {% if request.GET.activated == 'fail' %}
+            <br>
+            <p style='color:red'>The account has not been activated yet, please check your email for an activation link.</p>
+        {% endif %}
+        {% if request.GET.activation == 'success' %}
+            <br>
+            <p style='color:red'>Your account has been activated! You can now login with your credentials.</p>
+        {% elif request.GET.activation == 'duplicate' %}
+            <br>
+            <p style='color:red'>The account has been already activated!</p>
+        {% elif request.GET.activation == 'fail' %}
+            <br>
+            <p style='color:red'>Account activation failed!</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

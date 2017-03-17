@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}Checkout{% endblock %}
+
+{% block header %}
+{{ block.super }}
+<link rel='stylesheet' type='text/css' href='{% static "style.css" %}'>
+<script src='{% static "gamemessages.js" %}'></script>
+<script src='{% static "gameshopping.js" %}'></script>
+{% endblock %}
+
+{% block content %}
+<div class='container container-fluid'>
+    <div class='modal-dialog text-center'>
+        <form action='http://payments.webcourse.niksula.hut.fi/pay/' method='POST'>
+            <h1>Do you wish to buy the game {{ game_name }}?</h1>
+            <br>
+            <input type='hidden' name='pid' value='{{ pid }}'/>
+            <input type='hidden' name='sid' value='{{ sid }}'/>
+            <input type='hidden' name='success_url'
+                   value='http://{{ request.get_host }}{% url "payment_successful" %}'/>
+            <input type='hidden' name='cancel_url' value='http://{{ request.get_host }}{% url "payment_cancel" %}'/>
+            <input type='hidden' name='error_url' value='http://{{ request.get_host }}{% url "payment_error" %}'/>
+            <input type='hidden' name='checksum' value='{{ checksum }}'/>
+            <label for='id_amount'>Amount:</label>
+            <input type='text' id='id_amount' name='amount' value='{{ game_price }}' readonly/><br>
+            <input type='submit' value='Buy' id='pay'>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}Edit game{% endblock %}
+
+{% block header %}
+{{ block.super }}
+<link rel='stylesheet' type='text/css' href='{% static "style.css" %}'>
+{% endblock %}
+
+{% block content %}
+
+<div class='container container-fluid'>
+    <div class='modal-dialog'>
+
+        <h1 class='text-center'>Edit Game Information</h1><br>
+        <form action='/account/edit/game/{{ game.pk }}' method='POST'>
+            {% csrf_token %}
+
+            <label for='name'>Name of the game</label>
+            <input class='margin' id='name' type='text' name='name' placeholder='Name of the game'
+                   value='{{ game.name }}'><br>
+
+            <label for='category'>Category</label>
+            <input class='margin' id='category' type='text' name='category' placeholder='Category'
+                   value='{{ game.category }}'><br>
+
+            <label for='description'>Game description</label>
+            <textarea class="margin" id='description' rows="3" name='description' placeholder="Game description">{{ game.description }}</textarea><br>
+
+            <label for='price'>Game price</label>
+            <input class='margin' id='price' type='text' name='price' placeholder='Game price'
+                   value='{{ game.price }}'><br>
+
+            <div class='text-center'>
+                <input type='submit' value='Submit changes'>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+
+{% endblock %}

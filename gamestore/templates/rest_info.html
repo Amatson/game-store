@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}RESTful API{% endblock %}
+
+{% block header %}
+{{ block.super }}
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="../../../static/bootstrap/js/bootstrap.js"></script>
+    <link rel="stylesheet" href="../../../static/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="../../../static/style.css">
+    <link rel="stylesheet" href="../../../static/font-awesome/css/font-awesome.min.css">
+{% endblock %}
+
+{% block content %}
+
+<div class='container container-fluid'>
+    <div class='modal-dialog'>
+
+        <h1 class='text-center'>Gamestore RESTful API</h1><br>
+        Note: all return values are formatted in JSON<br>
+
+        <br><a href='/rest/games/'>Search games</a><br>
+        Parameters:<br>
+        <li>category: search by game category</li>
+        <li>developer: search by game developer</li>
+        Returns:
+        <li>pk: unique game id</li>
+        <li>name: name of the game</li>
+        <li>category: game category</li>
+        <li>description: game description</li>
+        <li>game_url: original URL of the game</li>
+        <li>price: current price of the game</li>
+        <li>developer: developer of the game</li>
+
+        <br><a href='/rest/highscores/'>Search high scores</a><br>
+        Parameters:<br>
+        <li>game: search by name of the game</li>
+        Returns:
+        <li>pk: unique high score id</li>
+        <li>player: username of the player</li>
+        <li>game: name of the game</li>
+        <li>score: score</li>
+
+        <br><a href='/rest/sales/'>Search sales statistics (developers only)</a><br>
+        <i>Note: only sales statistics for your own games are shown</i><br>
+        Parameters:<br>
+        <li>order: search by order id</li>
+        <li>game: search by name of the game</li>
+        <li>buyer: search by name of the buyer</li>
+        Returns:
+        <li>pk: unique order id</li>
+        <li>purchase_time: timestamp of the order</li>
+        <li>buyer: username of the buyer</li>
+        <li>seller: username of the seller</li>
+        <li>game: name of the game</li>
+        <li>price: price of the game in this order</li>
+        <li>status: status of the order (paid/not_paid)</li>
+
+    </div>
+</div>
+
+
+{% endblock %}

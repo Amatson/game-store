@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}Game{% endblock %}
+
+{% block header %}
+{{ block.super }}
+<script src="{% static 'gamemessages.js' %}"></script>
+
+<link rel='stylesheet' type='text/css' href='{% static "style.css" %}'>
+<meta property="og:title" content="Play {{ game.name }} at Gamestore!" />
+<meta property="og:description" content="Description of the game: {{ game.description }}" />
+
+{% endblock %}
+
+{% block content %}
+<!--Facebook share JavaScript code-->
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+</script>
+
+<div class='container container-fluid'>
+    <div class='modal-dialog'>
+
+
+        <h1 class='text-center'>{{game.name}}</h1>
+        <div class='gameplay'>
+          {{game.description}}
+        </div>
+        <!--Facebook share button-->
+        <div class="fb-share-button" data-href="http://nilkan-mikrosorto.herokuapp.com/game/{{ game.pk }}/"
+             data-layout="button_count" data-mobile-iframe="true">
+            <a class="fb-xfbml-parse-ignore" target="_blank"
+               href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fnilkan-mikrosorto.herokuapp.com%2Fgame%2F{{ game.pk }}%2F&amp;src=sdkpreparse">Share</a>
+        </div><br><br>
+
+        <a href='/highscores/{{ game.pk }}/'>High scores</a>
+        <br><br>
+
+        {% if not player_owns_game and perms.gamestore.player and game.price != 0 %}
+
+        <form action='{% url "buygame" game.pk %}'>
+            <input type="submit" value="Buy this game!"/>
+        </form>
+        {% endif %}
+
+        {% if developer_owns_game %}
+
+        <a class='text-center' href='/account/sales/{{ game.pk }}/'>Sales statistics</a>
+        {% endif %}
+
+        {% if perms.gamestore.player and game.price == 0 or player_owns_game %}
+        <div class='gameplay'>
+            <br>
+            <iframe id='game_iframe' src='{{ game.game_url }}' frameborder='1'></iframe>
+
+        </div>
+
+        <form action='/game/{{ game.pk }}/' method='POST' id='score_form'>
+            {% csrf_token %}
+            <input type='hidden' id='score' name='score'>
+        </form>
+
+        <form action='/game/{{ game.pk }}/' method='POST' id='save_form'>
+            {% csrf_token %}
+            <input type='hidden' id='state' name='state'>
+        </form>
+
+        <form action='/game/{{ game.pk }}/' method='POST' id='request_load_form'>
+            {% csrf_token %}
+            <input type='hidden' id='request_load' name='request_load'>
+        </form>
+
+        <input type='hidden' id='load_data' name='load_data' value='{{ load_data }}'>
+    </div>
+</div>
+
+{% endif %}
+{% endblock %}

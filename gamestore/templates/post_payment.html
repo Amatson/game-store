@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}Order information{% endblock %}
+
+{% block header %}
+{{ block.super }}
+<link rel='stylesheet' type='text/css' href='{% static "style.css" %}'>
+
+{% endblock %}
+
+{% block content %}
+<div class='container container-fluid'>
+    <div class='modal-dialog text-center'>
+        {% if state == 'success' %}
+        <h1>Success!</h1><br>
+        Order information:<br>
+        Order id: {{ order.pk }}<br>
+        Game: {{ game.name }}<br>
+        Price paid: {{ order.price }}<br>
+        <a href='/game/{{ game.pk }}'>Play the game</a><br>
+        <a href='/gamelist/'>Buy more games</a>
+        {% elif state == 'cancel' %}
+        The payment was cancelled.<br>
+        <a href='/gamelist/'>Browse games</a>
+        {% elif state == 'error' %}
+        An error occurred during the payment.<br>
+        <a href='/gamelist/'>Browse games</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}Browse games{% endblock %}
+
+{% block header %}
+{{ block.super }}
+<link rel='stylesheet' type='text/css' href='{% static "style.css" %}'>
+
+{% endblock %}
+
+{% block content %}
+
+
+<div class='container container-fluid'>
+    <h1 class='text-center'>List of games</h1><br>
+
+    <span class='category-search text-center'>
+      <form action='/gamelist/' method='GET'>
+        <select name='category'>
+          <option selected disabled>Game Category</option>
+          <option value='all'>All</option>
+          {% for category in categories %}
+          <option value='{{category}}'>{{category}}</option>
+          {% endfor %}
+        </select>
+        <input class='button_custom' type='submit' value='Search by Category'>
+      </form>
+    </span>
+<br>
+    <span class='name-search text-center'>
+      <form action='/gamelist/' method='GET'>
+        <input type='text' name='name' placeholder='Game name'>
+        <input class='button_custom' type='submit' value='Search by Name'>
+      </form>
+    </span>
+    <br>
+
+    <span class='gamelist'>
+            <div>
+                <ul style='margin:0 auto;'>
+                    {% for game in games %}
+                    <li>
+                        <span>{{game.price}}e</span>
+                        <a href='/game/{{game.id}}'><h3>{{game.name}}</h3>
+                        <p><strong>Category: {{game.category}} / developer: {{game.developer.user.username}}</strong></p>
+                        <p>{{game.description}}</p>
+                        </a>
+
+                    </li>
+                    {% endfor %}
+                </ul>
+
+            </div>
+        </span>
+</div>
+
+
+{% endblock %}

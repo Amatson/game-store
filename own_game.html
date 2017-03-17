@@ -1,0 +1,314 @@
+<body onload="startGame()">
+<style>
+canvas {
+    border:1px solid #d3d3d3;
+    background-color: #f1f1f1;
+}
+</style>
+  <script>
+    var myGamePiece;
+    var myMovingPiece;
+    var myScore;
+    var rightWall;
+    var END;
+    var myInterval = setInterval(updateGameArea, 20);
+    var message =  {
+      messageType: "SETTING",
+      options: {
+      	"width": 500, //Integer
+        "height": 400 //Integer
+        }
+    };
+    window.parent.postMessage(message, "*");
+
+    function startGame() {
+      myGamePiece = new bunny(30, 30, "red", 0, 120);
+      myGamePiece.gravity = 0.1;
+      myGamePiece.gravitySpeed = 0;
+      myMovingPiece = new carrot(30, 30, "blue", 60, -30);
+      myMovingPiece.gravity = 0.05;
+      myMovingPiece.gravitySpeed = 0;
+      myScore = new text("15px", "Arial", "black", 15, 30);
+      END = new text("15px", "Arial", "black", 15, 30)
+      speedAdd = 0;
+      myGameArea.start();
+    }
+    var myGameArea = {
+      canvas: document.createElement("canvas"),
+      start: function() {
+        this.canvas.width = 480;
+        this.canvas.height = 270;
+        this.context = this.canvas.getContext("2d");
+        document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+        this.interval = myInterval
+      },
+      clear: function() {
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      }
+    }
+
+    function bunny(width, height, color, x, y) {
+      this.rightWall = false;
+      this.score = 0;
+      this.width = width;
+      this.height = height;
+      this.speedX = 0;
+      this.speedY = 0;
+      this.x = x;
+      this.y = y;
+      this.gravity = 0;
+      this.gravitySpeed = 0;
+      this.update = function() {
+        ctx = myGameArea.context;
+        ctx.fillStyle = color;
+        ctx.fillRect(this.x, this.y, this.width, this.height);
+      }
+      this.hitBottom = function() {
+        var rockbottom = myGameArea.canvas.height - this.height;
+        if (this.y > rockbottom) {
+          this.y = rockbottom;
+          this.gravitySpeed = 0;
+          if (this.speedY != 0) {
+            this.speedY = 0;
+          }
+        }
+      }
+      this.hitWall = function() {
+        var wall = myGameArea.canvas.width - this.width;
+        if (this.x > wall && this.rightWall == false) {
+          this.score++;
+        }
+        if (this.x < 0 && this.rightWall == true) {
+          this.score++;
+        }
+        if (this.x > wall) {
+          this.x = wall;
+          this.speedX = 0;
+          this.rightWall = true;
+        }
+        if (this.x < 0) {
+          this.x = 0;
+          this.speedX = 0;
+          this.rightWall = false;
+        }
+
+      }
+      this.hitRoof = function() {
+        var roof = 0;
+        if (this.y < roof) {
+          this.y = roof;
+          this.speedY = 0;
+        }
+      }
+      this.newPos = function() {
+        this.gravitySpeed += this.gravity;
+        this.x += this.speedX;
+        this.y += this.speedY + this.gravitySpeed;
+        this.hitBottom();
+        this.hitWall();
+        this.hitRoof();
+      }
+
+      this.crashWith = function(otherobj) {
+        var myleft = this.x;
+        var myright = this.x + (this.width);
+        var mytop = this.y;
+        var mybottom = this.y + (this.height);
+        var otherleft = otherobj.x;
+        var otherright = otherobj.x + (otherobj.width);
+        var othertop = otherobj.y;
+        var otherbottom = otherobj.y + (otherobj.height);
+        var crash = true;
+        if ((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright)) {
+          crash = false;
+        }
+        return crash;
+      }
+    }
+
+    function carrot(width, height, color, x, y) {
+      this.width = width;
+      this.height = height;
+      this.speedX = 1;
+      this.speedY = 0;
+      this.x = x;
+      this.y = y;
+      this.gravity = 0;
+      this.gravitySpeed = 0;
+      this.update = function() {
+        ctx = myGameArea.context;
+        ctx.fillStyle = color;
+        ctx.fillRect(this.x, this.y, this.width, this.height);
+      }
+      this.hitBottom = function() {
+        var rockbottom = myGameArea.canvas.height - this.height;
+        if (this.y > rockbottom) {
+          this.y = rockbottom;
+          this.gravitySpeed = 0;
+        }
+      }
+      this.hitWall = function() {
+        var wall = myGameArea.canvas.width - this.width;
+        if (this.x > wall) {
+          this.x = wall;
+          this.speedX = 0;
+          this.speedX = -1 - speedAdd;
+          speedAdd += 0.2;
+          if (speedAdd > 3) {
+            speedAdd = 3;
+          }
+        }
+        if (this.x < 0) {
+          this.speedX = 0;
+          this.speedX = 1 + speedAdd;
+          speedAdd += 0.2;
+          if (speedAdd > 3) {
+            speedAdd = 3;
+          }
+        }
+      }
+      this.newPos = function() {
+        this.gravitySpeed += this.gravity;
+        this.x += this.speedX;
+        this.y += this.speedY + this.gravitySpeed;
+        this.hitBottom();
+        this.hitWall();
+      }
+    }
+
+
+    function text(width, height, color, x, y) {
+      this.width = width;
+      this.height = height;
+      this.x = x;
+      this.y = y;
+      this.update = function() {
+        ctx = myGameArea.context;
+        ctx.font = this.width + " " + this.height;
+        ctx.fillStyle = color;
+        ctx.fillText(this.text, this.x, this.y);
+      }
+    }
+
+    function updateGameArea() {
+      myGameArea.clear();
+      if (myGamePiece.crashWith(myMovingPiece)) {
+        END.text = "GAME OVER WITH SCORE: " + myGamePiece.score;
+        END.update();
+        return;
+      }
+      myMovingPiece.newPos();
+      myMovingPiece.update();
+      myGamePiece.newPos();
+      myGamePiece.update();
+      myScore.text = "SCORE: " + myGamePiece.score;
+      myScore.update();
+    }
+
+    function moveleft() {
+      myGamePiece.speedX -= 1;
+    }
+
+    function moveright() {
+      myGamePiece.speedX += 1;
+    }
+
+    function moveup() {
+      if (myGamePiece.speedY == 0) {
+        myGamePiece.speedY -= 5;
+
+      } else {
+        myGamePiece.speedY -= 0;
+      }
+    }
+
+    function restart() {
+      speedAdd = 0;
+      myGameArea.clear();
+      startGame();
+    }
+    function send_score(){
+    	var msg = {
+          "messageType": "SCORE",
+          "score": myGamePiece.score
+        };
+        window.parent.postMessage(msg, "*");
+    }
+    function save() {
+    	var msg = {
+        "messageType": "SAVE",
+        "gameState": {
+          "rightWall": myGamePiece.rightWall,
+      	  "score": myGamePiece.score,
+     	  "width": myGamePiece.width,
+      	  "height": myGamePiece.height,
+     	  "speedX":myGamePiece.speedX,
+     	  "speedY":myGamePiece.speedY,
+      	  "x":myGamePiece.x,
+     	  "y":myGamePiece.y,
+     	  "gravity":myGamePiece.gravity,
+      	  "gravitySpeed": myGamePiece.gravitySpeed,
+     	  "width1": myMovingPiece.width,
+      	  "height1": myMovingPiece.height,
+     	  "speedX1":myMovingPiece.speedX,
+     	  "speedY1":myMovingPiece.speedY,
+      	  "x1":myMovingPiece.x,
+     	  "y1":myMovingPiece.y,
+     	  "gravity1":myMovingPiece.gravity,
+      	  "gravitySpeed1": myMovingPiece.gravitySpeed
+        }
+      };
+      window.parent.postMessage(msg, "*");
+
+    }
+    function load() {
+    	  var msg = {
+        	"messageType": "LOAD_REQUEST",
+      	  };
+      	  window.parent.postMessage(msg, "*");
+
+
+    }
+
+
+  </script>
+<div style="text-align:center;width:480px;">
+<br>
+  <button onclick="moveup()">UP</button><br>
+  <button onclick="moveleft()">LEFT</button>
+  <button onclick="moveright()">RIGHT</button><br><br><br>
+  <button onclick="restart()">NEW GAME</button>
+  <button onclick="send_score()">SEND SCORE</button>
+  <button onclick="save()">SAVE</button>
+  <button onclick="load()">LOAD</button>
+</div>
+</body>
+<script>
+    window.addEventListener("message", function(evt) {
+      if(evt.data.messageType === "LOAD") {
+          myGamePiece.rightWall = evt.data.gameState.rightWall;
+      	  myGamePiece.score = evt.data.gameState.score;
+     	  myGamePiece.width = evt.data.gameState.width;
+      	  myGamePiece.height = evt.data.gameState.height;
+     	  myGamePiece.speedX = evt.data.gameState.speedX;
+     	  myGamePiece.speedY = evt.data.gameState.speedY;
+      	  myGamePiece.x = evt.data.gameState.x;
+     	  myGamePiece.y = evt.data.gameState.y;
+     	  myGamePiece.gravity = evt.data.gameState.gravity;
+      	  myGamePiece.gravitySpeed = evt.data.gameState.gravitySpeed;
+     	  myMovingPiece.width = evt.data.gameState.width1;
+      	  myMovingPiece.height = evt.data.gameState.height1;
+     	  myMovingPiece.speedX = evt.data.gameState.speedX1;
+     	  myMovingPiece.speedY = evt.data.gameState.speedY1;
+      	  myMovingPiece.x = evt.data.gameState.x1;
+     	  myMovingPiece.y = evt.data.gameState.y1;
+     	  myMovingPiece.gravity = evt.data.gameState.gravity1;
+      	  myMovingPiece.gravitySpeed = evt.data.gameState.gravitySpeed
+      	  updateGameArea()
+
+      } else if (evt.data.messageType === "ERROR") {
+        alert(evt.data.info);
+      }
+    });
+
+</script>

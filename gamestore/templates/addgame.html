@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}Add Game{% endblock %}
+
+{% block header %}
+{{ block.super }}
+
+<link rel='stylesheet' type='text/css' href='{% static "style.css" %}'>
+{% endblock %}
+
+{% block content %}
+<div class='container container-fluid'>
+    <div class='modal-dialog'>
+
+        <h1 class='text-center'>Add new game</h1><br>
+        <form method='post' action=''>
+            {% csrf_token %}
+            <form action='/add_game/' method='POST'>
+                {% csrf_token %}
+
+
+                <input class='margin' id='name' type='text' name='name' placeholder='Name of the game'><br>
+
+                <!--{# <input class='margin' id='category' type='text' name='category' placeholder='Category'><br>#}-->
+
+                <select class='margin' id='category' name='category'>
+                  <option selected disabled>Game category</option>
+                  {% for category in categories %}
+                  <option value='{{category}}'>{{category}}</option>
+                  {% endfor %}
+                </select>
+
+                <textarea class='margin' id='description' rows='3' name='description' placeholder='Game description'></textarea><br>
+                <input class='margin' id='game_url' type='text' name='game_url' placeholder='Url to the game'><br>
+                <input class='margin' id='price' type='text' name='price' placeholder='Game price'><br>
+
+
+                <p>*: required</p>
+                <div class='text-center'>
+                    <input class='button_custom' type='submit' value='Create'>
+                </div>
+            </form>
+        </form>
+    </div>
+</div>
+
+<p class='text-center'>
+{% if new_game and request.method == 'POST' %}
+Success!
+{% elif msg %}
+{{ msg }}
+{% elif request.method == 'POST' %}
+Fail!
+{% endif %}
+</p>
+{% endblock %}

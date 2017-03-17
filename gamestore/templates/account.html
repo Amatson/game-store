@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}My account{% endblock %}
+
+{% block header %}
+{{ block.super }}
+<link rel='stylesheet' type='text/css' href='{% static "style.css" %}'>
+
+{% endblock %}
+
+{% block content %}
+
+<div class='container container-fluid'>
+    <div class='modal-dialog box'>
+        <h1 class="text-center">User information</h1>
+        <h3 class="text-center">{{user.first_name}} {{user.last_name}} <a href='/account/edit/name/'><i
+                class="fa fa-pencil-square-o" aria-hidden="t"></i></a></h3>
+        <p class="text-center">@{{user}}</p>
+        <p class="text-center"><strong>{{account_type}}</strong></p>
+
+        {% if perms.gamestore.player %}
+
+        <div class="text-center">
+            <a href='/account/edit/password/'>
+                <input style='margin-bottom:5px' type="submit" value="Edit password"/>
+            </a>
+            <a class='none' href='/gamelist/'>
+                <input type="submit" value="Get more games"/>
+            </a>
+        </div>
+        {% endif %}
+
+        {% if perms.gamestore.developer %}
+        <div class="text-center">
+            <a href='/account/edit/password/'>
+                <input style='margin-bottom:5px' type="submit" value="Edit password"/>
+            </a>
+            <a href="/addgame/">
+                <input type="submit" value="Add a new game"/>
+            </a>
+        </div>
+        {% endif %}
+    </div>
+
+
+    <div class='modal-dialog'>
+        {% if perms.gamestore.player %}
+
+        <h2 class="text-center">Owned games</h2>
+        <span class="gamelist_user">
+            <div>
+                <ul style="margin:0 auto;">
+                    {% for game in games %}
+                    <li>
+                        <span><a href='/game/{{ game.pk }}/'>Play</a></span>
+                        <h3>{{game.name}}</h3>
+                        <p><strong>Category: {{game.category}}</strong></p>
+                        <p>{{game.description}}</p>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </span>
+
+        {% endif %}
+
+        {% if perms.gamestore.developer %}
+        <h2 class="text-center">List of added games</h2>
+        <span class="gamelist_user">
+            <div>
+                <ul style="margin:0 auto;">
+                    {% for game in games %}
+                    <li>
+                        <span><a href='/account/sales/{{ game.pk }}/'>Sales</a></span>
+                        <h3>{{game.name}} <a href='/account/edit/game/{{game.id}}'><i
+                                class="fa fa-pencil-square-o" aria-hidden="t"></i></a></h3>
+                        <p><strong>Category: {{game.category}}</strong></p>
+                        <p>{{game.description}}</p>
+                    </li>
+                    {% endfor %}
+                </ul>
+
+            </div>
+        </span>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

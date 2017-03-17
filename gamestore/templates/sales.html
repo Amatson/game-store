@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}Sales statistics{% endblock %}
+
+{% block header %}
+{{ block.super }}
+<link rel='stylesheet' type='text/css' href='{% static "style.css" %}'>
+
+{% endblock %}
+
+{% block content %}
+<!--
+<div class='container container-fluid'>
+    <div class='modal-dialog'>
+        Sales statistics for {{ game.name }}:
+        {% load tz %}
+        {% for order in orders %}
+        <li>Purchase time: {{ order.purchase_time|timezone:'Europe/Helsinki' }}, Order id: {{ order.pk }}, Buyer: {{
+            order.buyer.user.username }}, Price paid: {{ order.price }}
+        </li>
+        {% endfor %}
+
+        <br>
+        <a href='/game/{{ game.pk }}'>Go to the game</a>
+    </div>
+</div>-->
+<div class='container container-fluid'>
+    <div class='modal-dialog'>
+        <h1 class='text-center'>Sales statistics for {{ game.name }}</h1>
+
+
+        <span class="gamelist nohover">
+            <div>
+                <ul style="margin:0 auto;">
+                    {% load tz %}
+                    {% for order in orders %}
+                    <li class='nohover' style='margin-bottom: 10px'>Purchase time: {{ order.purchase_time|timezone:'Europe/Helsinki' }}, Order id: {{ order.pk }}, Buyer: {{ order.buyer.user.username }}, Price paid: {{ order.price }}</li>
+                    {% endfor %}
+
+                </ul>
+
+            </div>
+        </span>
+
+        <div class='text-center'><a href="/game/{{ game.pk }}">
+            <input type="submit" value="Back to the game"/>
+        </a></div>
+
+    </div>
+</div>
+{% endblock %}

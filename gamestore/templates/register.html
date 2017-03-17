@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}Register{% endblock %}
+
+{% block header %}
+{{ block.super }}
+<link rel='stylesheet' type='text/css' href='{% static "style.css" %}'>
+{% endblock %}
+
+{% block content %}
+
+<div class='container container-fluid '>
+    <div class='modal-dialog'>
+
+        <h1 class='text-center'>Register Your Account</h1><br>
+        <p class='errormessage' style='font-style: italic;color:red'>{{ message }}</p>
+
+        <form action='/register/' method='POST'>
+            {% csrf_token %}
+
+            <p style='font-style: italic'>*: required</p>
+            <input class='margin' id='username' type='text' name='username' placeholder='Username *' value='{{ username }}'><br>
+
+            <input class='margin' id='password' type='password' name='password' placeholder='Password *'><br>
+
+            <input class='margin' id='password_check' type='password' name='password_check' placeholder='Retype password *'><br>
+
+            <input class='margin' id='first_name' type='text' name='first_name' placeholder='First name' value='{{ first_name }}'><br>
+
+            <input class='margin' id='last_name' type='text' name='last_name' placeholder='Last name' value='{{ last_name }}'><br>
+
+            <input class='margin' id='email' type='text' name='email' placeholder='Email *' value='{{ email }}'><br>
+
+            <p>Account type:</p>
+            <input id='account_type_p' type='radio' name='account_type' value='player'
+            {% if account_type != 'developer' %} checked {% endif %}
+            > Player<br>
+            <input id='account_type_d' type='radio' name='account_type' value='developer'
+            {% if account_type == 'developer' %} checked {% endif %}
+            > Developer
+
+{#<!--{{ account_type == 'player'|yesno:"checked" }}--> #}
+
+            <div class='text-center'>
+                <input type='submit' value='Register'>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+
+{% endblock %}

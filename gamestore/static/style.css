@@ -1,0 +1,202 @@
+@import url(http://fonts.googleapis.com/css?family=Roboto);
+.gamelist div {
+  margin: 0px;
+}
+
+.gamelist ul {
+  list-style-type: none;
+  max-width: 500px;
+  margin: auto;
+}
+
+.gamelist h3 {
+  font: bold 20px/1.5 Helvetica, Verdana, sans-serif;
+}
+
+.gamelist li img {
+  float: left;
+  margin: 0 15px 0 0;
+}
+
+.gamelist li p {
+  font: 200 12px/1.5 Helvetica, Verdana, sans-serif;
+}
+
+.gamelist li {
+  padding: 10px;
+  overflow: auto;
+  border: 1px solid #eee;
+  margin-left: -35px;
+}
+
+.gamelist span {
+  float: right;
+  padding: 10px;
+  border: 1px solid #eee;
+  margin: -11px;
+}
+
+.gamelist li:hover {
+  background: #eee;
+  cursor: pointer;
+}
+.gamelist a {
+    color: black;
+}
+.gamelist a:hover{
+    text-decoration: none;
+}
+
+.box {
+  padding: 30px;
+  border: 1px solid #eee;
+  min-width: 250px;
+}
+
+.navbar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #D3D3D3;
+}
+
+.navbar li {
+    float: left;
+}
+
+.navbar li a {
+    display: block;
+    color: black;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.navbar li a:hover:not(.active) {
+    background-color: #111;
+    color: white;
+}
+
+.navbar .active {
+    background-color: #4CAF50;
+}
+
+
+#game_iframe {
+    overflow:hidden;
+    overflow-x:hidden;
+    overflow-y:hidden;
+    /*height:100%;  Set height to something proper. We can also use max-height?
+    width:100%;
+    max-height:300px;*/
+    position:absolute;
+    }
+
+p.gameplay {
+    font-style:italic;
+    }
+
+ html, body, .container-table {
+    height: 100%;
+}
+.container-table {
+    display: table;
+}
+.vertical-center-row {
+    display: table-cell;
+    vertical-align: middle;
+}
+.margin {
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+label {
+  cursor: pointer;
+}
+#menu-toggle {
+  display: none; /* hide the checkbox */
+}
+#menu {
+  display: none;
+}
+#menu-toggle:checked + #menu {
+  display: block;
+}
+
+#menu ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #D3D3D3;
+}
+
+#menu li {
+
+}
+
+#menu li a {
+    display: block;
+    color: black;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+input[type=submit] {
+    background-color: #eee;
+}
+
+a {
+    text-decoration: none !important;
+}
+.gamelist_user div {
+  margin: 20px;
+}
+
+.gamelist_user ul {
+  list-style-type: none;
+  max-width: 500px;
+  margin: auto;
+  min-width: 200px;
+}
+
+.gamelist_user h3 {
+  font: bold 20px/1.5 Helvetica, Verdana, sans-serif;
+}
+
+.gamelist_user li p {
+  font: 200 12px/1.5 Helvetica, Verdana, sans-serif;
+}
+
+.gamelist_user li {
+  padding: 10px;
+  overflow: auto;
+  border: 1px solid #eee;
+  margin-left: -35px;
+}
+
+.gamelist_user span {
+  float: right;
+  padding: 10px;
+  border: 1px solid #eee;
+  margin: -11px;
+}
+
+.gamelist_user span:hover {
+  background-color: #D3D3D3;
+}
+
+.gamelist_user a {
+    color: black;
+}
+.gamelist_user a:hover{
+    text-decoration: none;
+}
+
+.nohover li:hover{
+    background-color: white;
+    cursor: default !important;
+}
