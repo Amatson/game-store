@@ -1,4 +1,4 @@
-# Game Shop Project Plan
+# Game Store Project Plan
 
 ## Table of contents
 #### 1. Team
@@ -70,7 +70,7 @@ Picture 1: Django model structure
 
 ### 3.2. Functional Requirements Mandatory
 #### Authentication
-Users are able to register, login and logout to the game shop. In registration users can select either player or developer.
+Users are able to register, login and logout to the game store. In registration users can select either player or developer.
 
 User authentication is implemented using Django’s authentication methods. ([Django authentication](https://docs.djangoproject.com/en/1.10/topics/auth/))
 
@@ -84,13 +84,13 @@ Player must be able to search for a specific game. Search results are listed in 
 
 Player must be able to see a list of purchased games. This list is viewable from player’s personal account page.
 
-Player must be able to buy a desired game. When player wishes to play a game, the purchase list is checked and if the game in question is not on the list and it is not free to play, game is not loaded to the player’s game view. This way the game shop prevents the player from playing games that are not purchased.
+Player must be able to buy a desired game. When player wishes to play a game, the purchase list is checked and if the game in question is not on the list and it is not free to play, game is not loaded to the player’s game view. This way the game store prevents the player from playing games that are not purchased.
 Payment is handled by the course’s mockup payment service: [Niksula mockup payment](http://payments.webcourse.niksula.hut.fi/)
 
-Payment service handles the transaction and returns a response of confirmed payment to the game shop. The game shop then adds the bought game to the player’s list of purchased games thus allowing the player to play the game.
+Payment service handles the transaction and returns a response of confirmed payment to the game store. The game store then adds the bought game to the player’s list of purchased games thus allowing the player to play the game.
 
 #### Basic developer functionalities
-Developer must be able to add a game to the game shop. Developer does this by submitting a URL to the Javascript game.
+Developer must be able to add a game to the game store. Developer does this by submitting a URL to the Javascript game.
 
 Developer can add properties and information (such as price, category and description) to the game, and modify them later.
 
@@ -113,7 +113,7 @@ Project plan is produced and it will give details of this project. History and d
 
 ### 3.3. Functional Requirements Optional
 #### Own game
-Game will be implemented possibly using Quintus. It will be pretty simple game that is only giving perspective to how the game shop works with actual games. ([Quintus](http://www.html5quintus.com/))
+Game will be implemented possibly using Quintus. It will be pretty simple game that is only giving perspective to how the game store works with actual games. ([Quintus](http://www.html5quintus.com/))
 #### Mobile Friendly
 This will be implemented using bootstrap’s responsive layout tools. ([Bootsrap layout](http://getbootstrap.com/css/))
 #### 3rd party login
